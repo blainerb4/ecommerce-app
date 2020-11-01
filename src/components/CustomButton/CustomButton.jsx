@@ -6,9 +6,12 @@ import './CustomButton.scss'
 //then destrcutre props in otherprops
 //spread that into custom button, if we have type submit passed into custom button
 //button will get that
-const CustomButton = ({ children, isGoogleSignIn, ...otherProps }) => (
+const CustomButton = ({ children, isGoogleSignIn, inverted, ...otherProps }) => (
     <button 
-    className={`${isGoogleSignIn ? 'google-sign-in': ''} custom-button`} 
+    className=
+    {`${inverted ? 'inverted': ''} 
+    ${isGoogleSignIn ? 'google-sign-in': ''}
+    custom-button`} 
     {...otherProps}>
         {children}
     </button>
