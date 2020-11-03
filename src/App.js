@@ -4,10 +4,13 @@ import { connect } from 'react-redux'
 import './App.css';
 import HomePage from './pages/homepage/HomePage'
 import ShopPage from './pages/shop/Shop'
-import Header from './components/header/Header'
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up-page/sign-in-and-sign-up-page'
+import CheckoutPage from './pages/checkout/checkout'
+import Header from './components/header/Header'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import { auth, createUserProfileDocument  } from './firebase/firebase'
+import { selectCurrentUser } from './redux/user/user.selectors'
+import { createStructuredSelector } from 'reselect'
 
 class App extends React.Component {
    unsubscribeFromAuth = null
@@ -43,6 +46,7 @@ componentWillUnmount () {
       <Switch>
       <Route exact path='/' component = {HomePage}/>
       <Route path='/shop' component = {ShopPage} />
+      <Route exact path='/checkout' component = {CheckoutPage} />
       <Route 
       exact 
       path='/signin' 
@@ -56,8 +60,8 @@ componentWillUnmount () {
 //in the same place where component would be
 // if currentuser is present, redirect to homepage if not redirect to signinandsignupage
 // because we do not want the user to stay on signinsignupage
-const mapStateToProps = ({ user }) => ({
-  currentUser: user.currentUser
+const mapStateToProps = createStructuredSelector ({
+  currentUser: selectCurrentUser
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -65,6 +69,11 @@ const mapDispatchToProps = dispatch => ({
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
+
+//const mapStateToProps = ({ user }) => ({
+//  currentUser: user.currentUser
+//})
+
 // null because we dont need mapstatetoprops cos app doesnt need current user anymore
 //outside of passing into header doesnt do anything with currentuser
 //props that we pass in to whatever dispatch wants to pass (currentuser)
