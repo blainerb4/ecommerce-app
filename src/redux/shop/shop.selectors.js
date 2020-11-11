@@ -1,5 +1,5 @@
-import { createSelector } from 'reselect'
-import memoize from 'lodash.memoize';
+import { createSelector } from 'reselect';
+//import memoize from 'lodash.memoize';
 
 
 //object(collectionidmap) matches the string value (url parameter) to the id
@@ -12,20 +12,39 @@ export const selectCollections = createSelector (
 
 export const selectCollectionsForPreview = createSelector (
     [selectCollections],
-    collections => Object.keys(collections).map(key => collections[key])
+    collections => collections ? Object.keys(collections).map
+    (key => collections[key]) : []
 )
 //we get keys off collections, get allow the values
 
 
+export const selectCollection = collectionUrlParam =>
+  createSelector(
+    [selectCollections],
+    collections => (collections ? collections[collectionUrlParam] : null)
+);
+
+export const selectIsCollectionFetching = createSelector (
+    [selectShop],
+    shop => shop.isFetching
+)
+
+export const selectIsCollectionsLoaded = createSelector(
+    [selectShop],
+    shop => !!shop.collections
+)
+// !! - convert value to truthify or falsey boolean value
+//if collection is lading we will get true othrwise we will get false
+//storing lists of elements inside an objecvt and not an array -data normalization
+/*
+
 export const selectCollection = memoize((collectionUrlParam) =>
   createSelector(
     [selectCollections],
-    (collections) => collections[collectionUrlParam]
+    (collections) => collections ? collections[collectionUrlParam] : null
   )
 );
 
-//storing lists of elements inside an objecvt and not an array -data normalization
-/*
     export const selectCollection = collectionUrlParam =>
     createSelector (
         [selectCollections],

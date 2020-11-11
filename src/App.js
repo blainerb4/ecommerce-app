@@ -8,16 +8,18 @@ import SignInAndSignUpPage from './pages/sign-in-and-sign-up-page/sign-in-and-si
 import CheckoutPage from './pages/checkout/checkout'
 import Header from './components/header/Header'
 import { Switch, Route, Redirect } from 'react-router-dom'
-import { auth, createUserProfileDocument  } from './firebase/firebase'
-import { selectCurrentUser } from './redux/user/user.selectors'
+import { auth, createUserProfileDocument} from './firebase/firebase'
+
 import { createStructuredSelector } from 'reselect'
+import { selectCurrentUser } from './redux/user/user.selectors'
 
 class App extends React.Component {
-   unsubscribeFromAuth = null
+
+   unsubscribeFromAuth = null;
 
   componentDidMount (){
-    const { setCurrentUser } = this.props
-
+    const { setCurrentUser} = this.props
+    //adding shop data one time so we dont have to manually do it
 
     this.unsubscribeFromAuth = auth.onAuthStateChanged( async userAuth => {
         if (userAuth) {
@@ -29,13 +31,14 @@ class App extends React.Component {
                 ...snapShot.data()
               });
           });
-        } else{
-          setCurrentUser(userAuth)
+        } 
+          setCurrentUser(userAuth);
+  //        addCollectionAndDocuments('collections', collectionsArray.map(({title, items})=>({title, items})));
         }
-    });
+    );
   }
 
-
+//collections array returns array with objects with the values we want to keep
 componentWillUnmount () {
   this.unsubscribeFromAuth();
 }
@@ -62,6 +65,7 @@ componentWillUnmount () {
 // because we do not want the user to stay on signinsignupage
 const mapStateToProps = createStructuredSelector ({
   currentUser: selectCurrentUser
+ // collectionsArray: selectCollectionsForPreview
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -130,5 +134,9 @@ userRef.onSnapshot(snapShot => {
 //      this.setState({ currentUser: user })
 
       <Route exact path='/signin' component = {SignInAndSignUpPage} />
+//, addCollectionAndDocuments 
+//
+//, collectionsArray 
+import {selectCollectionsForPreview} from './redux/shop/shop.selectors'
 
 */

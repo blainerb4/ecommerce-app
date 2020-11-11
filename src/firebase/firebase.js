@@ -30,19 +30,51 @@ const config = {
                 email,
                 createdAt,
                 ...additionalData
-            })
+            });
         } catch(error){
             console.log('error creating user', error.message)
         }
     }
     return userRef;
   };
+//, objectsToAdd
+  export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
+      const collectionRef = firestore.collection(collectionKey);
+
+      const batch = firestore.batch();
+      objectsToAdd.forEach(obj =>{
+          const newDocRef = collectionRef.doc();
+          batch.set(newDocRef, obj)
+      });
+      return await batch.commit()
+  };
+
+  export const convertCollectionsSnapshotToMap = (collections) => {
+    const transformedCollection = collections.docs.map(doc => {
+        const {title, items} = doc.data();
+
+        return {
+            routeName: encodeURI(title.toLowerCase()),
+            id: doc.id,
+            title,
+            items
+        }
+    });
+
+    return transformedCollection.reduce((accumulator, collection) =>{
+        accumulator[collection.title.toLowerCase()] = collection;
+        return accumulator;
+    }, {})
+  };
+  //batch=group calls together into one big request
+  //foreach doesnt return us a  new array we just want to call the function
   // if the snapshot does not exist, create data in place if there isnt create new user 
   // 
   //this function allows us to take user auth object we got from authentication library and store it in the database
   //asynchronous action because we are making an api request, 
   //userauth object we got from auth library & additional data we might need
   //function has to make sure we get back valid object. bang = ! (true/false) if the userauth object does not exist exit
+  
   firebase.initializeApp(config);
 
   export const auth = firebase.auth();
