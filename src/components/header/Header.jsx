@@ -7,14 +7,14 @@ import {auth} from '../../firebase/firebase'
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect'
 import { selectCartHidden } from '../../redux/cart/cart.selectors'
-
+import {signOutStart} from '../../redux/user/user.action'
 import { selectCurrentUser } from '../../redux/user/user.selectors'
 import {HeaderContainer, LogoContainer, OptionsContainer, OptionLink, OptionDiv } from './header.styles'
 import './Header.scss';
 
 
 
-const Header = ({ currentUser, hidden }) => (
+const Header = ({ currentUser, hidden, signOutStart }) => (
     <HeaderContainer>
         <LogoContainer to='/'>
         <Logo className='logo'/>
@@ -28,7 +28,7 @@ const Header = ({ currentUser, hidden }) => (
         </OptionLink>
         {
             currentUser ?
-            <OptionDiv onClick={() => auth.signOut()}>SIGN OUT</OptionDiv>
+            <OptionDiv onClick={signOutStart}>SIGN OUT</OptionDiv>
             :
             <OptionLink to='/signin'>SIGN IN</OptionLink>
         }
@@ -37,13 +37,19 @@ const Header = ({ currentUser, hidden }) => (
         { hidden ? null : <CartDropdown /> }  
     </HeaderContainer>
 )
+//            <OptionDiv onClick={() => auth.signOut()}>SIGN OUT</OptionDiv>
+
 //if hidden is true we want to render nothing if not then render cart dropdown component
 const mapStateToProps = createStructuredSelector({
     currentUser: selectCurrentUser,
     hidden: selectCartHidden
 })
 
-export default connect(mapStateToProps)(Header);
+const mapDispatchToProps = dispatch => ({
+    signOutStart: () => dispatch(signOutStart())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
 
 //const mapStateToProps = ({user: {currentUser}, cart: {hidden}}) => ({
  //   currentUser,

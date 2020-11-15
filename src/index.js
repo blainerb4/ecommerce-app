@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react'
 import { store, persistor } from './redux/store'
+//import * as serviceWorker from './serviceWorker'
 //gives context of our new persisted reducer by leveraging the contents
 //state is being rehydrated and being updated
 //maintain cart state of our cart items across sessions
@@ -27,6 +28,7 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
+//serviceWorker.register()
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals

@@ -7,7 +7,9 @@ import {connect} from 'react-redux'
 //import { firestore, convertCollectionsSnapshotToMap } from '../../firebase/firebase'
 //import { updateCollections } from '../../redux/shop/shop.action'
 //import { createStructuredSelector } from 'reselect'
-import { fetchCollectionsStartAsync } from '../../redux/shop/shop.action'
+//import { fetchCollectionsStartAsync } from '../../redux/shop/shop.action'
+import { fetchCollectionsStart } from '../../redux/shop/shop.action'
+
 //import { selectIsCollectionsLoaded } from '../../redux/shop/shop.selectors'
 //selectIsCollectionFetching,
 //import WithSpinner from '../../components/with-spinner/with-spinner.components'
@@ -30,8 +32,8 @@ class ShopPage extends React.Component {
 
 
     componentDidMount(){
-        const { fetchCollectionsStartAsync } = this.props;
-        fetchCollectionsStartAsync();
+        const { fetchCollectionsStart } = this.props;
+        fetchCollectionsStart();
     }
 
     render(){
@@ -64,10 +66,10 @@ class ShopPage extends React.Component {
 //})
 
 const mapDispatchToProps = dispatch => ({
-    fetchCollectionsStartAsync: () => dispatch (fetchCollectionsStartAsync())
+    fetchCollectionsStart: () => dispatch (fetchCollectionsStart())
 })
 
-export default connec (null, mapDispatchToProps)(ShopPage)
+export default connect (null, mapDispatchToProps)(ShopPage)
 //export default connect(mapStateToProps)(ShopPage)
 //null,
 //<Route exact path= {`${match.path}`} component= {CollectionsOverview} />

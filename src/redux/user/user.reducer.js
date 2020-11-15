@@ -1,15 +1,33 @@
-import { UserActionTypes } from './user.types'
-
+import UserActionTypes from './user.types'
+//default exports no {}
 const INITIAL_STATE = {
-    currentUser: null
+    currentUser: null, 
+    error: null
 }
-
+//      case UserActionTypes.GOOGLE_SIGN_IN_SUCCESS:
+//case UserActionTypes.EMAIL_SIGN_IN_SUCCESS:
+//        case UserActionTypes.GOOGLE_SIGN_IN_FAILURE:
+//case UserActionTypes.EMAIL_SIGN_IN_FAILURE:
 const userReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case UserActionTypes.SET_CURRENT_USER:
+        case UserActionTypes.SIGN_IN_SUCCESS:
             return {
                 ...state,
-                currentUser: action.payload
+                currentUser: action.payload,
+                error: null
+            };
+        case UserActionTypes.SIGN_OUT_SUCCESS:
+            return {
+                ...state,
+                currentUser: null,
+                error: null
+            }
+        case UserActionTypes.SIGN_IN_FAILURE:
+        case UserActionTypes.SIGN_OUT_FAILURE:
+        case UserActionTypes.SIGN_UP_FAILURE:
+            return {
+                ...state,
+                error: action.payload
             }
         default:
             return state;
@@ -17,6 +35,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
 };
 
 export default userReducer;
+//        case UserActionTypes.SET_CURRENT_USER:
 
 //pass default value with state = INITIAL_STATE
 //if state is ever undefined it will fal back and pass null value
