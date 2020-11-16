@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 //import { setCurrentUser } from './redux/user/user.action'
 import { connect } from 'react-redux'
 import './App.css';
@@ -13,14 +13,18 @@ import { Switch, Route, Redirect } from 'react-router-dom'
 import { createStructuredSelector } from 'reselect'
 import { selectCurrentUser } from './redux/user/user.selectors'
 import {checkUserSession} from './redux/user/user.action'
+//we use useEffect with components with life cycle methods
+//class App extends React.Component {
+  const App = ({ checkUserSession, currentUser }) => {
+    useEffect(() => {
+      checkUserSession()
+    }, [checkUserSession])
 
-class App extends React.Component {
-
-   unsubscribeFromAuth = null;
+//   unsubscribeFromAuth = null;
    
-  componentDidMount (){
-    const {checkUserSession} = this.props;
-    checkUserSession();
+//  componentDidMount (){
+//    const {checkUserSession} = this.props;
+//    checkUserSession();
 //    const { setCurrentUser} = this.props
     //adding shop data one time so we dont have to manually do it
 
@@ -39,13 +43,14 @@ class App extends React.Component {
   //        addCollectionAndDocuments('collections', collectionsArray.map(({title, items})=>({title, items})));
         }
     );*/
-  }
+//  }
 
 //collections array returns array with objects with the values we want to keep
-componentWillUnmount () {
-  this.unsubscribeFromAuth();
-}
-    render() {
+
+//componentWillUnmount () {
+//  this.unsubscribeFromAuth();
+//}
+ //   render() {
     return (
       <div>
         <Header />
@@ -56,20 +61,23 @@ componentWillUnmount () {
       <Route 
       exact 
       path='/signin' 
-      render = {() => this.props.currentUser ? (<Redirect to= '/' />) : (<SignInAndSignUpPage />)} />
+      render = {() => currentUser ? (<Redirect to= '/' />) : <SignInAndSignUpPage />} />
       </Switch>
       </div>
     );
-  }
 }
+//}
+ //     render = {() => this.props.currentUser ? (<Redirect to= '/' />) : (<SignInAndSignUpPage />)} />
+
 // render javascript invocation that determines what component to return
 //in the same place where component would be
 // if currentuser is present, redirect to homepage if not redirect to signinandsignupage
 // because we do not want the user to stay on signinsignupage
 const mapStateToProps = createStructuredSelector ({
   currentUser: selectCurrentUser
- // collectionsArray: selectCollectionsForPreview
 })
+ // collectionsArray: selectCollectionsForPreview
+
 
 //const mapDispatchToProps = dispatch => ({
  // setCurrentUser: user => dispatch(setCurrentUser(user))

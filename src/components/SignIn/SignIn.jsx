@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './SignIn.scss';
 import FormInput from '../form-input/FormInput';
 import CustomButton from '../CustomButton/CustomButton';
@@ -6,20 +6,27 @@ import CustomButton from '../CustomButton/CustomButton';
 import { googleSignInStart, emailSignInStart} from '../../redux/user/user.action'
 import {connect} from 'react-redux'
 //class component - we have to store what the user types in
+//convert this.state into use state
+//class SignIn extends React.Component {
+const SignIn = ({ emailSignInStart, googleSignInStart }) => {
+    const [userCredentials, setCredentials] = useState({ email: '', password: '' })
 
-class SignIn extends React.Component {
-    constructor(){
-        super();
-        this.state = {
-            email: '',
-            password: ''
-        }
-    }
-
-    handleSubmit = async event => {
+ //   constructor(){
+  //      super();
+  //      this.state = {
+   //         email: '',
+   //         password: ''
+   //     }
+  //  }
+//    handleSubmit = async event => {
+    const { email, password } = userCredentials
+//put the destrucuture higher so we have access in  our return
+    const handleSubmit = async event => {
         event.preventDefault();
-        const {emailSignInStart} = this.props;
-        const { email, password } = this.state
+//        const {emailSignInStart} = this.props;
+//        const { email, password } = this.state
+//const { email, password } = userCredentials
+
         emailSignInStart(email, password);
 
  //       try {
@@ -30,10 +37,11 @@ class SignIn extends React.Component {
    //     }
     }
 //no more set state redux will be handling the state with sagas
-    handleChange = event => {
+    const handleChange = event => {
         const { value, name } = event.target;
-
-        this.setState({ [name]: value })
+        
+ //       this.setState({ [name]: value })
+        setCredentials({ ...userCredentials, [name]: value })
     }
 // on change value points to handlechange function
 //pulls the value and name off event.target
@@ -41,26 +49,30 @@ class SignIn extends React.Component {
 // we want the name value and the value of the target the user types in
 //this,setstate dynamically sets our state 
 //so it sets that name and renders the value the user types in
-    render(){
-        const { googleSignInStart } = this.props
+ //   render(){
+  //      const { googleSignInStart } = this.props
+
+//                    value={this.state.email} 
+//                    value={this.state.password} 
+
         return (
             <div className='sign-in'>
                 <h2>I already have an account</h2>
                 <span>Sign in with your email and password</span>
 
-                <form onSubmit={this.handleSubmit}>
+                <form onSubmit={handleSubmit}>
                     <FormInput 
                     name ='email' 
                     type='email' 
-                    value={this.state.email} 
-                    handleChange={this.handleChange} 
+                    value={email} 
+                    handleChange={handleChange} 
                     label='email'
                     required />
                     <FormInput
                     name='password' 
                     type='password' 
-                    value={this.state.password} 
-                    handleChange={this.handleChange}
+                    value={password} 
+                    handleChange={handleChange}
                     label='password'
                     required 
                     />
@@ -74,7 +86,8 @@ class SignIn extends React.Component {
             </div>
         )
     }
-}
+//}
+//<form onSubmit={this.handleSubmit}>
 //we have children so we could replace the value='submit form'
 // our onsubmit function calls our method handlesubmit
 // handlesubmit prevents the default submit action from firing

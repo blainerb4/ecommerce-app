@@ -1,9 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
+//import { Link } from 'react-router-dom'
 import CartIcon from '../cart-icon/CartIcon'
 import CartDropdown from '../cart-dropdown/CartDropdown'
 import {ReactComponent as Logo} from '../../assets/crown.svg'
-import {auth} from '../../firebase/firebase'
+//import {auth} from '../../firebase/firebase'
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect'
 import { selectCartHidden } from '../../redux/cart/cart.selectors'
